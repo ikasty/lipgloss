@@ -179,7 +179,9 @@ func newResizer(tableWidth, tableHeight int, headers []string, rows [][]string) 
 
 // optimizedWidths returns the optimized column widths and row heights.
 func (r *resizer) optimizedWidths() (colWidths, rowHeights []int) {
-	if r.maxTotal() <= r.tableWidth {
+	// maxTotal 은 테두리를 빼고 센다. 테두리까지 더해 비교해야 expandTableWidth 가
+	// 표 폭을 넘는 열 폭을 그대로 돌려주지 않는다 (로컬 패치, upstream 미수정).
+	if r.maxTotal()+r.totalHorizontalBorder() <= r.tableWidth {
 		return r.expandTableWidth()
 	}
 	return r.shrinkTableWidth()

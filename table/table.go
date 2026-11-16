@@ -297,7 +297,7 @@ func (t *Table) computeHeight() int {
 	hasHeaders := len(t.headers) > 0
 	return sum(t.heights) - 1 + btoi(hasHeaders) +
 		btoi(t.borderTop) + btoi(t.borderBottom) +
-		btoi(t.borderHeader) + t.data.Rows()*btoi(t.borderRow)
+		btoi(t.borderHeader) + max(t.data.Rows()-1, 0)*btoi(t.borderRow) // 구분선은 행 사이에만 (로컬 패치)
 }
 
 // Render returns the table as a string.

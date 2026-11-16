@@ -50,6 +50,8 @@ func (t *Table) resize() {
 	r := newResizer(t.width, t.height, t.headers, rows)
 	r.wrap = t.wrap
 	r.borderColumn = t.borderColumn
+	r.borderLeft = t.borderLeft // 좌우 테두리를 켰는지에 따라 테두리 폭을 센다 (lipgloss baa7611 백포트)
+	r.borderRight = t.borderRight
 	r.yPaddings = make([][]int, len(r.allRows))
 
 	var allRows [][]string
@@ -125,6 +127,8 @@ type resizer struct {
 
 	wrap         bool
 	borderColumn bool
+	borderLeft   bool
+	borderRight  bool
 	yPaddings    [][]int // vertical paddings
 }
 
@@ -397,23 +401,7 @@ func (r *resizer) xPaddingForCell(i, j int) int {
 
 // totalHorizontalBorder returns the total border.
 func (r *resizer) totalHorizontalBorder() int {
-	return (r.columnCount() * r.borderPerCell()) + r.extraBorder()
-}
-
-// borderPerCell returns number of border chars per cell.
-func (r *resizer) borderPerCell() int {
-	if r.borderColumn {
-		return 1
-	}
-	return 0
-}
-
-// extraBorder returns the number of the extra border char at the end of the table.
-func (r *resizer) extraBorder() int {
-	if r.borderColumn {
-		return 1
-	}
-	return 0
+	return btoi(r.borderLeft) + btoi(r.borderRight) + (r.columnCount()-1)*btoi(r.borderColumn)
 }
 
 // detectContentHeight detects the content height.

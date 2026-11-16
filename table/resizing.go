@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/x/ansi"
+	"github.com/charmbracelet/x/cellbuf"
 )
 
 // resize resizes the table to fit the specified width.
@@ -423,7 +423,7 @@ func (r *resizer) detectContentHeight(content string, width int) (height int) {
 	}
 	content = strings.ReplaceAll(content, "\r\n", "\n")
 	for _, line := range strings.Split(content, "\n") {
-		height += strings.Count(ansi.Wrap(line, width, ""), "\n") + 1
+		height += strings.Count(cellbuf.Wrap(line, width, ""), "\n") + 1
 	}
 	return
 }

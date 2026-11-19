@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"charm.land/lipgloss/v2"
-	"github.com/charmbracelet/x/ansi"
 )
 
 // resize resizes the table to fit the specified width.
@@ -444,7 +443,7 @@ func (r *resizer) detectContentHeight(content string, width int) (height int) {
 	}
 	content = strings.ReplaceAll(content, "\r\n", "\n")
 	for _, line := range strings.Split(content, "\n") {
-		height += strings.Count(ansi.Wrap(line, width, ""), "\n") + 1
+		height += strings.Count(lipgloss.Wrap(line, width, ""), "\n") + 1
 	}
 	return
 }
